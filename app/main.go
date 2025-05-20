@@ -11,6 +11,7 @@ type Simple struct {
     Name        string
     Description string
     Url         string
+    
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
