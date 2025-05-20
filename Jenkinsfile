@@ -1,14 +1,20 @@
 pipeline {
     agent any
 
-    tools {
-       go "1.24.1"
+    triggers {
+        pollSCM('* * * * *') // Optional for polling
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
         stage('Build') {
             steps {
-                sh "go build app/main.go"
+                echo 'Building...'
+                // Add your build steps here
             }
         }
     }
