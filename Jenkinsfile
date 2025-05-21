@@ -11,6 +11,12 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Dependencies') {
+            steps {
+                sh 'go mod tidy'
+                sh 'go mod download'
+            }
+        }
         stage('Test') {
             steps {
                 sh "go test ./app/..."
