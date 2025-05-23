@@ -29,8 +29,17 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'scp main laborant@target:~'
-            }
-        }
+                withCredentials([sshUserPrivateKey(credentialsId: 'a89f0d01-f02b-428d-b571-596c2eeebe79',
+                                                   keyFileVariable: 'ssh_key',
+                                                   usernameVariable: 'ssh_user')]) {
+                    sh """
+
+chmod +x main
+
+mkdir -p ~/.ssh
+ssh-keyscan target >> ~/.ssh/known_hosts
+"""
+
+}
     }
 }
