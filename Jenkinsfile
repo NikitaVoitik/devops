@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-       go "1.24.1"
+        go "1.24.1"
     }
 
     stages {
@@ -29,17 +29,16 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'a89f0d01-f02b-428d-b571-596c2eeebe79',
-                                                   keyFileVariable: 'ssh_key',
-                                                   usernameVariable: 'ssh_user')]) {
-                    sh """
-
+                withCredentials([sshUserPrivateKey(
+                    credentialsId: 'a89f0d01-f02b-428d-b571-596c2eeebe79',
+                    keyFileVariable: 'ssh_key',
+                    usernameVariable: 'ssh_user')]) {
+                        sh """
 chmod +x main
-
 mkdir -p ~/.ssh
 ssh-keyscan target >> ~/.ssh/known_hosts
 """
-
+                }
             }
         }
     }
