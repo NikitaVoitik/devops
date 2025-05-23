@@ -40,6 +40,7 @@ mkdir -p ~/.ssh
 ssh-keyscan target >> ~/.ssh/known_hosts
 """
 
-}
+            }
+        }
     }
 }
