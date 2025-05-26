@@ -39,7 +39,7 @@ chmod +x main
 mkdir -p ~/.ssh
 ssh-keyscan target >> ~/.ssh/known_hosts
 
-ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service'
+ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service || true'
 
 scp -i ${ssh_key} main ${ssh_user}@target:
 
