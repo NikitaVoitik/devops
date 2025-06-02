@@ -45,7 +45,7 @@ ssh -i ${ssh_key} laborant@docker 'docker stop app_container || true && docker r
 
 ssh -i ${ssh_key} laborant@docker 'docker pull ttl.sh/main.app:2h'
 
-ssh -i ${ssh_key} laborant@docker 'docker run -p 4444:4444 --name app_container ttl.sh/main.app:2h'
+ssh -i ${ssh_key} laborant@docker 'docker run -p -d 4444:4444 --name app_container ttl.sh/main.app:2h'
 """
                 }
             }
