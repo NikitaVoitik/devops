@@ -28,19 +28,6 @@ pipeline {
                 sh "docker push ttl.sh/main.app:2h"
             }
         }
-        stage('Login') {
-            steps {
-                withCredentials([sshUserPrivateKey(
-                    credentialsId: '485e9257-7c6e-411e-9487-267a87234a20',
-                    keyFileVariable: 'ssh_key',
-                    usernameVariable: 'ssh_user')]) {
-                        sh """
-                            mkdir -p ~/.ssh
-                            ssh-keyscan docker >> ~/.ssh/known_hosts
-                           """
-                }
-            }
-        }
         stage('Deploy Kubernetes') {
             steps {
                 withKubeConfig([credentialsId: 'user1', serverUrl: 'https://k8s:6443']) {
