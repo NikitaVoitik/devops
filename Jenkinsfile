@@ -37,15 +37,15 @@ pipeline {
                     usernameVariable: 'ssh_user')]) {
                         sh """
 mkdir -p ~/.ssh
-ssh-keyscan target >> ~/.ssh/known_hosts
+ssh-keyscan docker >> ~/.ssh/known_hosts
 
-ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service || true'
+ssh -i ${ssh_key} laborant@docker 'sudo systemctl stop main.service || true'
 
-ssh -i ${ssh_key} laborant@target 'docker stop app_container || true && docker rm app_container || true'
+ssh -i ${ssh_key} laborant@docker 'docker stop app_container || true && docker rm app_container || true'
 
-ssh -i ${ssh_key} laborant@target 'docker pull ttl.sh/main.app:2h'
+ssh -i ${ssh_key} laborant@docker 'docker pull ttl.sh/main.app:2h'
 
-ssh -i ${ssh_key} laborant@target 'docker run -p 4444:4444 --name app_container ttl.sh/main.app:2h'
+ssh -i ${ssh_key} laborant@docker 'docker run -p 4444:4444 --name app_container ttl.sh/main.app:2h'
 """
                 }
             }
