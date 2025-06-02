@@ -36,12 +36,13 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh "docker build -t main.app ."
+                sh "docker build . --tag ttl.sh/main.app:2h"
+
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker save main.app -o main.app.tar'
+                sh "docker push ttl.sh/main.app:2h"
                 withCredentials([sshUserPrivateKey(
                     credentialsId: '485e9257-7c6e-411e-9487-267a87234a20',
                     keyFileVariable: 'ssh_key',
@@ -54,9 +55,9 @@ ssh-keyscan target >> ~/.ssh/known_hosts
 
 ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service || true'
 
-scp -i ${ssh_key} main.app.tar ${ssh_user}@target:
+ssh -i ${ssh_key} laborant@target 'docker stop app_container || true && docker rm app_container || true'
 
-docker load -i main.app.tar
+ssh -i ${ssh_key} laborant@target 'docker pull ttl.sh/main.app:2h'
 
 ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main.service /etc/systemd/system/main.service'
 
@@ -64,7 +65,7 @@ ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main /opt/main'
 
 ssh -i ${ssh_key} laborant@target 'sudo systemctl daemon-reload'
 
-ssh -i ${ssh_key} laborant@target 'docker run -p 4444:4444 --name app_container main.app'
+ssh -i ${ssh_key} laborant@target 'docker run -p 4444:4444 --name app_container ttl.sh/main.app:2h'
 """
                 }
             }
