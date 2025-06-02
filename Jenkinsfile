@@ -42,11 +42,13 @@ pipeline {
             }
         }
         stage('Deploy Kubernetes') {
-            withKubeConfig([credentialsId: 'user1', serverUrl: 'https://k8s:6443']) {
-                sh 'kubectl apply -f pod.yaml'
-                sh 'kubectl wait --for=condition=Ready pod/myapp --timeout=120s'
-                sh 'kubectl apply -f service.yaml'
-                sh 'kubectl get svc myapp-service -o wide'
+            steps {
+                withKubeConfig([credentialsId: 'user1', serverUrl: 'https://k8s:6443']) {
+                    sh 'kubectl apply -f pod.yaml'
+                    sh 'kubectl wait --for=condition=Ready pod/myapp --timeout=120s'
+                    sh 'kubectl apply -f service.yaml'
+                    sh 'kubectl get svc myapp-service -o wide'
+                }
             }
         }
     }
