@@ -22,18 +22,26 @@ pipeline {
                 sh "go test ./app/..."
             }
         }
+        stage('Setup') {
+            steps {
+                sh '''
+                    if ! command -v docker &> /dev/null; then
+                        echo "Installing Docker..."
+                        # Add Docker installation commands for your OS
+                        curl -fsSL https://get.docker.com -o get-docker.sh
+                        sh get-docker.sh
+                    fi
+                '''
+            }
+        }
         stage('Build') {
             steps {
-                script {
-                    sh "docker build -t main.app ."
-                }
+                sh "docker build -t main.app ."
             }
         }
         stage('Deploy') {
             steps {
-                script {
-                    sh 'docker save main.app -o main.app.tar'
-                }
+                sh 'docker save main.app -o main.app.tar'
                 withCredentials([sshUserPrivateKey(
                     credentialsId: '485e9257-7c6e-411e-9487-267a87234a20',
                     keyFileVariable: 'ssh_key',
@@ -56,7 +64,7 @@ ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main /opt/main'
 
 ssh -i ${ssh_key} laborant@target 'sudo systemctl daemon-reload'
 
-sh 'docker run -p 4444:4444 --name app_container app'
+ssh -i ${ssh_key} laborant@target 'docker run -p 4444:4444 --name app_container main.app'
 """
                 }
             }
