@@ -25,7 +25,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    dockerImage = docker.build("main.app")
+                    sh "docker build -t main.app ."
                 }
             }
         }
