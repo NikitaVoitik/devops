@@ -22,18 +22,6 @@ pipeline {
                 sh "go test ./app/..."
             }
         }
-        stage('Setup') {
-            steps {
-                sh '''
-                    if ! command -v docker &> /dev/null; then
-                        echo "Installing Docker..."
-                        # Add Docker installation commands for your OS
-                        curl -fsSL https://get.docker.com -o get-docker.sh
-                        sh get-docker.sh
-                    fi
-                '''
-            }
-        }
         stage('Build') {
             steps {
                 sh "docker build . --tag ttl.sh/main.app:2h"
