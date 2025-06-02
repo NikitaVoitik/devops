@@ -48,13 +48,15 @@ ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service || true'
 
 scp -i ${ssh_key} main.app.tar ${ssh_user}@target:
 
+docker load -i main.app.tar
+
 ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main.service /etc/systemd/system/main.service'
 
 ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main /opt/main'
 
 ssh -i ${ssh_key} laborant@target 'sudo systemctl daemon-reload'
 
-sh 'docker run -d --name main_app_container main.app'
+sh 'docker run -p 4444:4444 --name app_container app'
 """
                 }
             }
