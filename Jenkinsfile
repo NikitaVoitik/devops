@@ -38,8 +38,6 @@ pipeline {
 mkdir -p ~/.ssh
 ssh-keyscan docker >> ~/.ssh/known_hosts
 
-ssh -i $SSH_KEY $EC2_USER@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'sudo systemctl stop main.service || true'
-
 ssh -i $SSH_KEY $EC2_USER@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker stop app_container || true && docker rm app_container || true'
 
 ssh -i $SSH_KEY $EC2_USER@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker pull ttl.sh/main.app:2h'
