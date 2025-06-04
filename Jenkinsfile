@@ -36,13 +36,13 @@ pipeline {
             usernameVariable: 'EC2_USER')]) {
                     sh '''
 mkdir -p ~/.ssh
-ssh-keyscan docker >> ~/.ssh/known_hosts
+ssh-keyscan ec2-18-197-32-2.eu-central-1.compute.amazonaws.com >> ~/.ssh/known_hosts
 
-ssh -i $SSH_KEY $EC2_USER@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker stop app_container || true && docker rm app_container || true'
+ssh -i $SSH_KEY ec2-userR@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker stop app_container || true && docker rm app_container || true'
 
-ssh -i $SSH_KEY $EC2_USER@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker pull ttl.sh/main.app:2h'
+ssh -i $SSH_KEY ec2-userR@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker pull ttl.sh/main.app:2h'
 
-ssh -i $SSH_KEY $EC2_USER@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker run -d -p 4444:4444 --name app_container ttl.sh/main.app:2h'
+ssh -i $SSH_KEY ec2-userR@ec2-18-197-32-2.eu-central-1.compute.amazonaws.com 'docker run -d -p 4444:4444 --name app_container ttl.sh/main.app:2h'
 '''
             }
     }
