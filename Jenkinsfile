@@ -15,7 +15,6 @@ pipeline {
             steps {
                 sh 'go mod tidy'
                 sh 'go mod download'
-                sh 'sudo yum install -y docker'
             }
         }
         stage('Test') {
